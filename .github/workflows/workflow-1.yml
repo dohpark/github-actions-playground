@@ -2,9 +2,7 @@
 name: first workflow 
 
 # define when workflow works
-on: 
-	# allows you to run this workflow manually from the Actions tab
-	workflow_dispatch
+on: workflow_dispatch # allows you to run this workflow manually from the Actions tab
 
 jobs:
   first-job:
@@ -13,13 +11,11 @@ jobs:
       ubuntu-latest
     steps:
       # define name of step
-      - name: 
-        print hello
+      - name: print hello
 
         # execute shell script or an action
         run:
           echo "hello world!"
-      - name:
-        print goodbye
+      - name: print goodbye
         run:
           echo "done - goodbye"
