@@ -10,3 +10,5 @@ jobs:
         uses: actions/setup-node@3
         with:
           node-version: 18
+      - name: Install dependencies
+        run: npm ci
