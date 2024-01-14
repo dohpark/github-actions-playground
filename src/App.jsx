@@ -4,6 +4,7 @@ import logo from './assets/images/logo.png';
 function App() {
   return (
     <>
+      <h2>Github Actions</h2>
       <header>
         <div id="logo-img">
           <img src={logo} />
