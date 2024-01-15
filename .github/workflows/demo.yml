@@ -1,26 +1,12 @@
-name: Demo 1
+name: Deploy website
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-    branches:
-      - main
-      - 'dev-*'
-      - 'feat/**'
   push:
     branches:
       - main
-      - 'dev-*'
-      - 'feat/**'
-    paths-ignore:
-      - '.github/workflows/*'
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Output event data
-        run: echo "${{ toJson(github.event) }}"
       - name: Get code
         uses: actions/checkout@v3
       - name: Install pnpm
@@ -36,7 +22,35 @@ jobs:
         run: pnpm install
       - name: Run tests
         run: pnpm run test
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
       - name: Run build
         run: pnpm run build
-      - name: Deploy project
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
         run: echo "Deploying..."
